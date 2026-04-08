@@ -34,7 +34,7 @@ $team = [
     <header>
         <div class="top-bar">
             <div class="logo-area">
-                <img src="images/teamlogo.png" alt="404 Logo" class="header-logo">
+                <img src="images/teamlogo.png" alt="404 Logo" class="header-logo" width="400">
                 <span class="logo-main">404:</span><span class="logo-sub"> Team Not Found</span>
             </div>
         </div>
@@ -56,7 +56,7 @@ $team = [
         <div class="team-grid">
             <?php foreach ($team as $member): ?>
                 <div class="member-card">
-                    <img src="<?php echo $member['pic']; ?>" alt="<?php echo $member['name']; ?>" class="member-img">
+                    <img src="<?php echo $member['pic']; ?>" alt="<?php echo $member['name']; ?>" class="member-img" width="300">
                     <div class="member-info">
                         <h3><?php echo $member['name']; ?></h3>
                         <p><?php echo $member['bio']; ?></p>
