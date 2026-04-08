@@ -11,9 +11,9 @@ $team = [
         "pic"  => "images/m2.png"
     ],
     [
-        "name" => "Member 3",
-        "bio"  => "Add a real bio here. Placeholders like 'Hello' will lose points.",
-        "pic"  => "images/m3.png"
+        "name" => "Jack Pustinger",
+        "bio"  => "Junior computer science student at CSU, majoring in Software Engineering and Computational Mathematics. Enjoys video games, basketball, and snowboaring.",
+        "pic"  => "images/jpusting.jpg"
     ],
     [
         "name" => "Member 4",
