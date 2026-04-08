@@ -1,0 +1,14 @@
+.grid-table {
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+.grid-table td {
+    border: 1px solid #ccc;  
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    padding: 0;
+}
