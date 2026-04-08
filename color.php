@@ -126,7 +126,6 @@ $chosenColors = [];
             dropdowns.forEach(dd => {
                 dd.addEventListener('change', function() {
                     const chosen = this.value;
-                    $chosenColors.push(chosen);
                     let duplicate = false;
 
                     dropdowns.forEach(other => {
