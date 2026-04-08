@@ -1,0 +1,57 @@
+@media print {
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+html {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%); 
+}
+
+body {
+    width: 8.5 in;
+    margin: 0.5 in;
+}
+
+header{
+    margin-bottom: 40px;
+}
+
+
+table{
+    min-width: 60%;
+    max-width: 90%;
+}
+
+.color-table {
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    /*margin: 20px auto;*/
+}
+
+.color-table td {
+    border: 1px solid #ccc;  
+    text-align: left;
+    height: 30px;
+    vertical-align: middle;
+    padding: 0;
+    padding-left: 5px;
+    font-size: 14px;
+}
+
+.grid-table {
+    border-collapse: collapse;
+    /*margin: 20px auto;*/
+}
+
+.grid-table td {
+    border: 1px solid #ccc;  
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+    font-size: 14px;
+}
