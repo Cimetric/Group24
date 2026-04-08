@@ -6,8 +6,8 @@ $team = [
         "pic"  => "images/blythese.png"
     ],
     [
-        "name" => "Member 2",
-        "bio"  => "Add a real bio here to secure the 15 points for this section.",
+        "name" => "Paul Gaudin",
+        "bio"  => "Computer Science Senior at CSU. Enjoys coding, video games, music and spending time with his girlfriend dogs and other loved ones.",
         "pic"  => "images/m2.png"
     ],
     [
