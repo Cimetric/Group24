@@ -16,9 +16,9 @@ $team = [
         "pic"  => "images/jpusting.jpg"
     ],
     [
-        "name" => "Member 4",
-        "bio"  => "Add a real bio here. Ensure it's unique to the student.",
-        "pic"  => "images/m4.png"
+        "name" => "Mayur Bhat",
+        "bio"  => "Third year computer science student with an interest in embedded and system programming. Loves to play acoustic guitar and multiplayer games.",
+        "pic"  => "images/mayurb.jpg"
     ]
 ];
 ?>
