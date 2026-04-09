@@ -8,7 +8,7 @@ $team = [
     [
         "name" => "Paul Gaudin",
         "bio"  => "Computer Science Senior at CSU. Enjoys coding, video games, music and spending time with his girlfriend dogs and other loved ones.",
-        "pic"  => "images/m2.png"
+        "pic"  => "images/paulgg.jpg"
     ],
     [
         "name" => "Jack Pustinger",
