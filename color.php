@@ -49,8 +49,8 @@ $chosenColors = [];
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li>
-                <li class="active"><a href="about.php">About</a></li>
-                <li><a href="color.php">Color Coordinator</a></li>
+                <li><a href="about.php">About</a></li>
+                <li class="active"><a href="color.php">Color Coordinator</a></li>
             </ul>
         </nav>
     </header>
