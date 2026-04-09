@@ -34,7 +34,7 @@ $team = [
     <header>
         <div class="top-bar">
             <div class="logo-area">
-                <img src="images/teamlogo.png" alt="404 Logo" class="header-logo" width="400">
+                <img src="images/teamlogo.png" alt="404 Logo" class="header-logo">
                 <span class="logo-main">404:</span><span class="logo-sub"> Team Not Found</span>
             </div>
         </div>
