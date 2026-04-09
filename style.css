@@ -1,14 +1,253 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #080818;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #1a1a2e;
+}
+
+.top-bar {
+    padding: 16px 32px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo {
+    height: 50px;
+}
+
+.logo-main {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.logo-sub {
+    color: #c8d6e5;
+}
+
+nav {
+    background-color: #0f3460;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li a {
+    display: block;
+    padding: 14px 24px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background-color: #1a1a2e;
+}
+
+nav ul li.active a {
+    background-color: #1a1a2e;
+    font-weight: 700;
+    border-bottom: 3px solid #ff2d78;
+}
+
+main {
+    flex: 1;
+    padding: 32px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #1a1a2e;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    font-size: 2.4rem;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #c8d6e5;
+    margin-bottom: 28px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: #0f3460;
+    color: #ffffff;
+    padding: 14px 32px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.services h2 {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.card-container {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background-color: #16213e;
+    padding: 24px;
+    flex: 1 1 260px;
+    max-width: 340px;
+    border-top: 4px solid #ff2d78;
+}
+
+.card p,
+.member-info p {
+    line-height: 1.6;
+}
+
+.team-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.member-card {
+    display: flex;
+    gap: 28px;
+    background-color: #16213e;
+    padding: 24px;
+    align-items: flex-start;
+    border-left: 5px solid #ff2d78;
+}
+
+.member-img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #16213e;
+}
+
+label {
+    font-weight: 600;
+}
+
+input[type="number"] {
+    padding: 8px 12px;
+    border: 2px solid #0f3460;
+    width: 80px;
+    color: #1a1a2e;
+    background-color: #ffffff;
+}
+
+button {
+    background-color: #0f3460;
+    color: #ffffff;
+    border: none;
+    padding: 10px 22px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1a1a2e;
+}
+
+.error {
+    font-weight: 700;
+    margin: 8px 0;
+    padding: 10px 16px;
+    border-left: 4px solid #ff2d78;
+}
+
+.color-message {
+    font-weight: 600;
+    margin: 8px 0;
+    min-height: 1.4em;
+}
+
+.color-table {
+    width: 95%;
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+.color-table td {
+    padding: 8px 12px;
+    border: 1px solid #0f3460;
+    vertical-align: middle;
+}
+
+.color-dropdown {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #0f3460;
+    background-color: #ffffff;
+    color: #1a1a2e;
+    cursor: pointer;
+}
+
 .grid-table {
     border-collapse: collapse;
     margin: 20px auto;
 }
 
 .grid-table td {
-    border: 1px solid #ccc;  
+    border: 1px solid #ccc;
     width: 35px;
     height: 35px;
     text-align: center;
     vertical-align: middle;
     font-size: 14px;
-    padding: 0;
+}
+
+.grid-table tr:first-child td,
+.grid-table td:first-child {
+    background-color: #0f3460;
+    font-weight: 700;
+}
+
+.grid-table tr:first-child td:first-child {
+    background-color: #1a1a2e;
+}
+
+footer {
+    background-color: #1a1a2e;
+    text-align: center;
+    padding: 18px 32px;
 }
