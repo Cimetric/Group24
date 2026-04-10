@@ -1,7 +1,8 @@
 <?php
 $size = $_POST['size'] ?? 26;
 $numColors = $_POST['numColors'] ?? 10;
-$selectedColors = $_POST['selectedColors'] ?? ['Red','Orange','Yellow','Green','Blue','Purple','Grey','Brown','Black','Teal'];
+$selectedColorsRaw = $_POST['selectedColors'] ?? 'Red,Orange,Yellow,Green,Blue,Purple,Grey,Brown,Black,Teal';
+$selectedColors = is_array($selectedColorsRaw) ? $selectedColorsRaw : explode(',', $selectedColorsRaw);
 
 $postError = false;
 

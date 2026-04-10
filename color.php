@@ -27,7 +27,7 @@ $colorHex = [
     'Black'  => '#000000',
     'Teal'   => '#008080',
 ];
-$chosenColors = [];
+$selectedColors = [];
 ?>
 
 
@@ -106,16 +106,22 @@ $chosenColors = [];
             </tr>
             <?php endfor; ?>
         </table>
-        <form method="POST" action="print.php">
-            <input type="hidden" name= "rows" value="<?php echo $rows; ?>"> 
-            <input type="hidden" name= "numColors" value="<?php echo $numColors; ?>"> 
-            <input type="hidden" name= "chosenColors" value="<?php echo $chosenColors; ?>"> 
+        <form method="POST" action="print.php" id="printForm">
+            <input type="hidden" name="size" value="<?php echo $rows; ?>"> 
+            <input type="hidden" name="numColors" value="<?php echo $numColors; ?>"> 
+            <input type="hidden" name="selectedColors" id="chosenColorsInput" value="<?php echo implode(',', $selectedColors); ?>"> 
             <button type="submit"> Print </button>
         </form> 
     </main>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const colorHex = {
+                'Red':'#FF0000','Orange':'#FFA500','Yellow':'#FFFF00','Green':'#008000',
+                'Blue':'#0000FF','Purple':'#800080','Grey':'#808080','Brown':'#8B4513',
+                'Black':'#000000','Teal':'#008080'
+            };
+
             const dropdowns = document.querySelectorAll('.color-dropdown');
             const msgBox = document.getElementById('color-msg');
 
@@ -123,6 +129,7 @@ $chosenColors = [];
                 dd.dataset.prev = dd.value;
             });
 
+            
             dropdowns.forEach(dd => {
                 dd.addEventListener('change', function() {
                     const chosen = this.value;
@@ -144,20 +151,24 @@ $chosenColors = [];
                         if (msgBox) msgBox.textContent = '';
 
                         // Update the preview cell background color and text
-                        const colorHex = {
-                            'Red':'#FF0000','Orange':'#FFA500','Yellow':'#FFFF00','Green':'#008000',
-                            'Blue':'#0000FF','Purple':'#800080','Grey':'#808080','Brown':'#8B4513',
-                            'Black':'#000000','Teal':'#008080'
-                        };
                         const previewCell = this.closest('tr').querySelector('td:last-child');
                         previewCell.style.backgroundColor = colorHex[chosen];
                         previewCell.textContent = chosen;
                     }
                 });
             });
+
+            const printForm = document.getElementById('printForm');
+            if (printForm) {
+                printForm.addEventListener('submit', function() {
+                    const colors = [];
+                    dropdowns.forEach(dd => colors.push(dd.value));
+                    document.getElementById('chosenColorsInput').value = colors.join(',');
+                });
+            }
         });
-        
     </script>
+    
     <footer>
         <p>&copy; 2026 404: Team Not Found — CSU CT312 Project</p>
     </footer>
