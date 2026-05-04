@@ -1,3 +1,3 @@
 <?php
-$db = "paulgg";
+$db = "blythese";
 ?>
