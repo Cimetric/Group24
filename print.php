@@ -1,14 +1,19 @@
 <?php
 $size = $_POST['size'] ?? 26;
 $numColors = $_POST['numColors'] ?? 10;
-$selectedColorsRaw = $_POST['selectedColors'] ?? 'Red,Orange,Yellow,Green,Blue,Purple,Grey,Brown,Black,Teal';
-$selectedColors = is_array($selectedColorsRaw) ? $selectedColorsRaw : explode(',', $selectedColorsRaw);
+$selectedColorsRaw = $_POST['selectedColors'] ?? '';
+$hexValuesRaw = $_POST['hexValues'] ?? '';
+$coordinatesRaw = $_POST['coordinates'] ?? '[]';
+
+$selectedColors = $selectedColorsRaw !== '' ? explode(',', $selectedColorsRaw) : [];
+$hexValues = $hexValuesRaw !== '' ? explode(',', $hexValuesRaw) : [];
+$coordinates = json_decode($coordinatesRaw, true) ?? [];
 
 $postError = false;
 
 if($size < 1 || $size > 26) $postError = true;
 if($numColors < 1 || $numColors > 10) $postError = true;
-if(count($selectedColors) !== $numColors) $postError = true;
+if(count($selectedColors) !== (int)$numColors) $postError = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,21 +25,27 @@ if(count($selectedColors) !== $numColors) $postError = true;
     <link rel="stylesheet" href="print.css">
 </head>
 <body>
-    <header> 
+    <header>
         <div class="logo-area">
             <img src="images/teamlogo.png" alt="404 Logo" class="header-logo" width="200">
             <span class="logo-main"><h1 style="display: inline;">404: Team Not Found</h1></span>
         </div>
     </header>
+    <?php if ($postError): ?>
+        <p>Invalid submission. Please go back and generate a grid first.</p>
+    <?php else: ?>
     <div class = "Table 1">
         <table class = "color-table">
-        <?php foreach($selectedColors as $color) {
-            echo '<tr>';
-            echo '<td style="width: 20%;">' . $color . '</td>';
-            echo '<td style="background-color: ' . $color . '; width: 80%;">' . $color . '</td>';
-            echo "</tr>";
-        }
+        <?php for ($i = 0; $i < $numColors; $i++):
+            $name   = htmlspecialchars($selectedColors[$i] ?? '');
+            $hex    = htmlspecialchars($hexValues[$i] ?? '');
+            $coords = htmlspecialchars($coordinates[$i] ?? '');
         ?>
+            <tr>
+                <td style="width: 20%;"><?php echo $name . ' — ' . $hex; ?></td>
+                <td style="width: 80%;"><?php echo $coords; ?></td>
+            </tr>
+        <?php endfor; ?>
         </table>
     </div>
     <div class = "Table 2">
@@ -56,5 +67,6 @@ if(count($selectedColors) !== $numColors) $postError = true;
             <?php endfor; ?>
         </table>
     </div>
+    <?php endif; ?>
 </body>
 </html>

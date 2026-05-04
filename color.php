@@ -4,14 +4,14 @@ $numColors = isset($_POST['numColors']) ? (int)$_POST['numColors'] : null;
 
 $errors = [];
 
-if ($rows < 1 || $rows > 26) {
+if ($rows !== null && ($rows < 1 || $rows > 26)) {
         $errors[] = "Rows and Columns must be between 1 and 26.";
 }
-if ($numColors < 1 || $numColors > 10) {
+if ($numColors !== null && ($numColors < 1 || $numColors > 10)) {
         $errors[] = "Number of Colors must be between 1 and 10.";
 }
 
-$valid = empty($errors);
+$valid = empty($errors) && $rows !== null && $numColors !== null;
 
 $allColors = ['Red','Orange','Yellow','Green','Blue','Purple','Grey','Brown','Black','Teal'];
 
@@ -57,12 +57,12 @@ $selectedColors = [];
 
     <main class="container">
         <form method="POST" action="color.php">
-            <label for="rows"> Rows and Columns (1-26): </label> 
-            <input type="number" name="rows" id="rows" min="1" max="26" value="<?php echo isset($rows) ? $rows : ''; ?>"> 
+            <label for="rows"> Rows and Columns (1-26): </label>
+            <input type="number" name="rows" id="rows" min="1" max="26" value="<?php echo isset($rows) ? $rows : ''; ?>">
             <label for="numColors"> Number of Colors (1-10): </label>
-            <input type="number" name="numColors" id="numColors" min="1" max="10" value="<?php echo isset($numColors) ? $numColors : ''; ?>"> 
+            <input type="number" name="numColors" id="numColors" min="1" max="10" value="<?php echo isset($numColors) ? $numColors : ''; ?>">
             <button type="submit"> Generate </button>
-        </form> 
+        </form>
 
         <?php foreach ($errors as $err): ?>
         <p class="error"><?php echo htmlspecialchars($err); ?></p>
@@ -70,9 +70,13 @@ $selectedColors = [];
 
         <p id="color-msg" class="color-message"></p>
 
+        <?php if ($valid): ?>
         <table class="color-table">
             <?php for ($i = 0; $i < $numColors; $i++): ?>
             <tr>
+                <td style="width:5%; text-align:center;">
+                    <input type="radio" name="activeColor" class="color-radio" value="<?php echo $i; ?>" <?php if ($i === 0) echo 'checked'; ?>>
+                </td>
                 <td style="width:20%;">
                     <select class="color-dropdown" data-index="<?php echo $i; ?>">
                         <?php foreach ($allColors as $color): ?>
@@ -83,9 +87,10 @@ $selectedColors = [];
                         <?php endforeach; ?>
                     </select>
                 </td>
-                <td style="width:80%; background-color: <?php echo $colorHex[$allColors[$i]]; ?>;">
+                <td style="width:40%; background-color: <?php echo $colorHex[$allColors[$i]]; ?>;" id="preview-<?php echo $i; ?>">
                     <?php echo $allColors[$i]; ?>
                 </td>
+                <td style="width:35%;" id="coords-<?php echo $i; ?>"></td>
             </tr>
             <?php endfor; ?>
         </table>
@@ -100,36 +105,74 @@ $selectedColors = [];
                 <?php elseif ($c === 0): ?>
                     <td><?php echo $r; ?></td>
                 <?php else: ?>
-                    <td></td>
+                    <td class="paintable" data-row="<?php echo $r; ?>" data-col="<?php echo $c; ?>"></td>
                 <?php endif; ?>
                 <?php endfor; ?>
             </tr>
             <?php endfor; ?>
         </table>
         <form method="POST" action="print.php" id="printForm">
-            <input type="hidden" name="size" value="<?php echo $rows; ?>"> 
-            <input type="hidden" name="numColors" value="<?php echo $numColors; ?>"> 
-            <input type="hidden" name="selectedColors" id="chosenColorsInput" value="<?php echo implode(',', $selectedColors); ?>"> 
+            <input type="hidden" name="size" value="<?php echo $rows; ?>">
+            <input type="hidden" name="numColors" value="<?php echo $numColors; ?>">
+            <input type="hidden" name="selectedColors" id="chosenColorsInput" value="">
+            <input type="hidden" name="hexValues" id="hexValuesInput" value="">
+            <input type="hidden" name="coordinates" id="coordinatesInput" value="">
             <button type="submit"> Print </button>
-        </form> 
+        </form>
+        <?php endif; ?>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const colorHex = {
-                'Red':'#FF0000','Orange':'#FFA500','Yellow':'#FFFF00','Green':'#008000',
-                'Blue':'#0000FF','Purple':'#800080','Grey':'#808080','Brown':'#8B4513',
-                'Black':'#000000','Teal':'#008080'
-            };
+            const colorHex = <?php echo json_encode($colorHex); ?>;
 
             const dropdowns = document.querySelectorAll('.color-dropdown');
+            const radios = document.querySelectorAll('.color-radio');
+            const paintable = document.querySelectorAll('.paintable');
             const msgBox = document.getElementById('color-msg');
 
-            dropdowns.forEach(dd => {
-                dd.dataset.prev = dd.value;
+            const colorCoords = Array.from({length: <?php echo $valid ? $numColors : 0; ?>}, () => new Set());
+
+            dropdowns.forEach(dd => { dd.dataset.prev = dd.value; });
+
+            function getActiveIndex() {
+                for (const r of radios) {
+                    if (r.checked) return parseInt(r.value);
+                }
+                return 0;
+            }
+
+            function sortCoords(arr) {
+                return [...arr].sort((a, b) => {
+                    if (a[0] !== b[0]) return a.charCodeAt(0) - b.charCodeAt(0);
+                    return parseInt(a.slice(1)) - parseInt(b.slice(1));
+                });
+            }
+
+            function updateCoordsDisplay(idx) {
+                const el = document.getElementById('coords-' + idx);
+                if (el) el.textContent = sortCoords([...colorCoords[idx]]).join(', ');
+            }
+
+            paintable.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    const activeIdx = getActiveIndex();
+                    const hex = colorHex[dropdowns[activeIdx].value];
+                    const coord = String.fromCharCode(64 + parseInt(this.dataset.col)) + this.dataset.row;
+                    const prevOwner = this.dataset.colorIndex;
+
+                    if (prevOwner !== undefined && parseInt(prevOwner) !== activeIdx) {
+                        colorCoords[parseInt(prevOwner)].delete(coord);
+                        updateCoordsDisplay(parseInt(prevOwner));
+                    }
+
+                    this.style.backgroundColor = hex;
+                    this.dataset.colorIndex = activeIdx;
+                    colorCoords[activeIdx].add(coord);
+                    updateCoordsDisplay(activeIdx);
+                });
             });
 
-            
             dropdowns.forEach(dd => {
                 dd.addEventListener('change', function() {
                     const chosen = this.value;
@@ -147,13 +190,20 @@ $selectedColors = [];
                             msgBox.textContent = '"' + chosen + '" is already in use. Please pick a different color.';
                         }
                     } else {
+                        const idx = parseInt(this.dataset.index);
+                        const newHex = colorHex[chosen];
                         this.dataset.prev = chosen;
                         if (msgBox) msgBox.textContent = '';
 
-                        // Update the preview cell background color and text
-                        const previewCell = this.closest('tr').querySelector('td:last-child');
-                        previewCell.style.backgroundColor = colorHex[chosen];
+                        const previewCell = document.getElementById('preview-' + idx);
+                        previewCell.style.backgroundColor = newHex;
                         previewCell.textContent = chosen;
+
+                        paintable.forEach(cell => {
+                            if (parseInt(cell.dataset.colorIndex) === idx) {
+                                cell.style.backgroundColor = newHex;
+                            }
+                        });
                     }
                 });
             });
@@ -161,14 +211,21 @@ $selectedColors = [];
             const printForm = document.getElementById('printForm');
             if (printForm) {
                 printForm.addEventListener('submit', function() {
-                    const colors = [];
-                    dropdowns.forEach(dd => colors.push(dd.value));
+                    const colors = [], hexes = [];
+                    dropdowns.forEach(dd => {
+                        colors.push(dd.value);
+                        hexes.push(colorHex[dd.value]);
+                    });
+                    const coordsData = colorCoords.map(set => sortCoords([...set]).join(', '));
+
                     document.getElementById('chosenColorsInput').value = colors.join(',');
+                    document.getElementById('hexValuesInput').value = hexes.join(',');
+                    document.getElementById('coordinatesInput').value = JSON.stringify(coordsData);
                 });
             }
         });
     </script>
-    
+
     <footer>
         <p>&copy; 2026 404: Team Not Found — CSU CT312 Project</p>
     </footer>
