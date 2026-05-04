@@ -15,5 +15,3 @@ INSERT INTO colors (id, name, GPA) VALUES
 ('Black', '#000000'),
 ('Teal', '#008080');
 
-SHOW CREATE TABLE colors;
-
