@@ -43,6 +43,7 @@ $team = [
                 <li><a href="index.php">Home</a></li>
                 <li class="active"><a href="about.php">About</a></li>
                 <li><a href="color.php">Color Coordinator</a></li>
+                <li><a href="colors.php">Color Selector</a></li>
             </ul>
         </nav>
     </header>
