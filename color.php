@@ -1,32 +1,29 @@
 <?php
-$rows = isset($_POST['rows']) ? (int)$_POST['rows'] : null;
+$rows      = isset($_POST['rows'])      ? (int)$_POST['rows']      : null;
 $numColors = isset($_POST['numColors']) ? (int)$_POST['numColors'] : null;
 
 $errors = [];
 
 if ($rows !== null && ($rows < 1 || $rows > 26)) {
-        $errors[] = "Rows and Columns must be between 1 and 26.";
+    $errors[] = "Rows and Columns must be between 1 and 26.";
 }
-if ($numColors !== null && ($numColors < 1 || $numColors > 10)) {
-        $errors[] = "Number of Colors must be between 1 and 10.";
+
+require __DIR__ . '/db.php';
+$result    = $conn->query('SELECT name, hex_value FROM colors ORDER BY name');
+$allColors = [];
+$colorHex  = [];
+while ($row = $result->fetch_assoc()) {
+    $allColors[]            = $row['name'];
+    $colorHex[$row['name']] = $row['hex_value'];
+}
+
+
+$maxColors = count($allColors);
+if ($numColors !== null && ($numColors < 1 || $numColors > $maxColors)) {
+    $errors[] = "Number of Colors must be between 1 and $maxColors (colors available in the database).";
 }
 
 $valid = empty($errors) && $rows !== null && $numColors !== null;
-
-$allColors = ['Red','Orange','Yellow','Green','Blue','Purple','Grey','Brown','Black','Teal'];
-
-$colorHex = [
-    'Red'    => '#FF0000',
-    'Orange' => '#FFA500',
-    'Yellow' => '#FFFF00',
-    'Green'  => '#008000',
-    'Blue'   => '#0000FF',
-    'Purple' => '#800080',
-    'Grey'   => '#808080',
-    'Brown'  => '#A52A2A',
-    'Black'  => '#000000',
-    'Teal'   => '#008080',
-];
 $selectedColors = [];
 ?>
 
@@ -60,7 +57,7 @@ $selectedColors = [];
         <form method="POST" action="color.php">
             <label for="rows"> Rows and Columns (1-26): </label>
             <input type="number" name="rows" id="rows" min="1" max="26" value="<?php echo isset($rows) ? $rows : ''; ?>">
-            <label for="numColors"> Number of Colors (1-10): </label>
+            <label for="numColors"> Number of Colors (1-<?php echo $maxColors; ?>): </label>
             <input type="number" name="numColors" id="numColors" min="1" max="10" value="<?php echo isset($numColors) ? $numColors : ''; ?>">
             <button type="submit"> Generate </button>
         </form>

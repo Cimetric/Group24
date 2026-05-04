@@ -3,8 +3,6 @@ require __DIR__ . '/db.php';
 
 $errors = [];
 
-//Load
-
 //Add 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
     $name = trim($_POST['name'] ?? '');
@@ -82,6 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
     }
 }
+//Reset
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'reset_colors') {
+    $conn->query('DELETE FROM colors');
+    $conn->query("INSERT INTO colors (name, hex_value) VALUES
+        ('Red','#FF0000'),('Orange','#FFA500'),('Yellow','#FFFF00'),
+        ('Green','#008000'),('Blue','#0000FF'),('Purple','#800080'),
+        ('Grey','#808080'),('Brown','#A52A2A'),('Black','#000000'),('Teal','#008080')");
+    $redirect = $_POST['redirect'] ?? 'colors';
+    header('Location: ' . ($redirect === 'color' ? 'color.php' : 'colors.php') . '?msg=reset');
+    exit;
+}
 //Load
 $result = $conn->query('SELECT id, name, hex_value FROM colors ORDER BY id');
 $colors = $result->fetch_all(MYSQLI_ASSOC);
@@ -94,6 +103,7 @@ $successMsg = match($_GET['msg'] ?? '') {
     'added'   => 'Color added successfully.',
     'updated' => 'Color updated successfully.',
     'deleted' => 'Color deleted successfully.',
+    'reset'   => 'Color list reset to defaults.',
     default   => ''
 };
 ?>
@@ -123,7 +133,14 @@ $successMsg = match($_GET['msg'] ?? '') {
     </header>
 
     <main class="container">
+        
+        <?php if ($successMsg): ?>
+            <div class="notice"><?php echo htmlspecialchars($successMsg); ?></div>
+        <?php endif; ?>
 
+        <?php foreach ($errors as $e): ?>
+            <div class="error"><?php echo htmlspecialchars($e); ?></div>
+        <?php endforeach; ?>
         <section class = "services">
             <h2>Add a Color</h2>
         </section>
@@ -232,14 +249,10 @@ $successMsg = match($_GET['msg'] ?? '') {
                 <?php endforeach; ?>
             </tbody>
         </table>
-
-        <?php if ($successMsg): ?>
-            <div class="notice"><?php echo htmlspecialchars($successMsg); ?></div>
-        <?php endif; ?>
-
-        <?php foreach ($errors as $e): ?>
-            <div class="error"><?php echo htmlspecialchars($e); ?></div>
-        <?php endforeach; ?>
+        <form method="POST" action="colors.php" style="display:inline;">
+            <input type="hidden" name="action" value="reset_colors">
+            <button type="submit">Reset Color List</button>
+        </form>
     </main>
 
     <footer>
