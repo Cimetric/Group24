@@ -1,3 +1,3 @@
 <?php
-$username = "";
+$username = "paulgg";
 ?>
