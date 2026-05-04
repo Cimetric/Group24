@@ -3,7 +3,7 @@ CREATE TABLE colors (
     name VARCHAR(255) UNIQUE NOT NULL, 
     hex_value VARCHAR(7) UNIQUE NOT NULL);
 
-INSERT INTO colors (id, name, GPA) VALUES 
+INSERT INTO colors (id, name, hex_value) VALUES 
 ('Red', '#FF0000'),
 ('Orange', '#FFA500'),
 ('Yellow', '#FFFF00'),
