@@ -58,7 +58,7 @@ $selectedColors = [];
             <label for="rows"> Rows and Columns (1-26): </label>
             <input type="number" name="rows" id="rows" min="1" max="26" value="<?php echo isset($rows) ? $rows : ''; ?>">
             <label for="numColors"> Number of Colors (1-<?php echo $maxColors; ?>): </label>
-            <input type="number" name="numColors" id="numColors" min="1" max="10" value="<?php echo isset($numColors) ? $numColors : ''; ?>">
+            <input type="number" name="numColors" id="numColors" min="1" max="<?php echo $maxColors; ?>" value="<?php echo isset($numColors) ? $numColors : ''; ?>">
             <button type="submit"> Generate </button>
         </form>
 
