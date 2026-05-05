@@ -6,7 +6,7 @@ $errors = [];
 //Add 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
     $name = trim($_POST['name'] ?? '');
-    $hex  = trim($_POST['hex_value'] ?? '');
+    $hex  = strtoupper(trim($_POST['hex_value'] ?? ''));
 
     if ($name === '') {
         $errors[] = 'Color name is required.';
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit') {
     $id   = (int)($_POST['edit_id'] ?? 0);
     $name = trim($_POST['name'] ?? '');
-    $hex  = trim($_POST['hex_value'] ?? '');
+    $hex  = strtoupper(trim($_POST['hex_value'] ?? ''));
 
     if ($name === '') {
         $errors[] = 'Color name is required.';
@@ -151,7 +151,7 @@ $successMsg = match($_GET['msg'] ?? '') {
                 value="<?php echo isset($_POST['action']) && $_POST['action'] === 'add' ? htmlspecialchars($_POST['name'] ?? '') : ''; ?>">
             <label for="add-hex">Hex Value:</label>
             <input type="color" id="add-hex" name="hex_value"
-                value="<?php echo isset($_POST['action']) && $_POST['action'] === 'add' && preg_match('/^#[0-9A-Fa-f]{6}$/', $_POST['hex_value'] ?? '') ? htmlspecialchars($_POST['hex_value']) : '#000000'; ?>">
+                value="<?php echo isset($_POST['action']) && $_POST['action'] === 'add' && preg_match('/^#[0-9A-Fa-f]{6}$/', $_POST['hex_value'] ?? '') ? strtoupper(htmlspecialchars($_POST['hex_value'])) : '#000000'; ?>">
             <button type="submit">Add Color</button>
         </form>
 
