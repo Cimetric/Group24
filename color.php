@@ -116,6 +116,7 @@ $selectedColors = [];
             <input type="hidden" name="selectedColors" id="chosenColorsInput" value="">
             <input type="hidden" name="hexValues" id="hexValuesInput" value="">
             <input type="hidden" name="coordinates" id="coordinatesInput" value="">
+            <input type="hidden" name="maxColors" id="maxColors" value="<?php echo $maxColors; ?>">
             <button type="submit"> Print </button>
         </form>
         <?php endif; ?>
