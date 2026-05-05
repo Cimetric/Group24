@@ -4,6 +4,7 @@ $numColors = $_POST['numColors'] ?? 10;
 $selectedColorsRaw = $_POST['selectedColors'] ?? '';
 $hexValuesRaw = $_POST['hexValues'] ?? '';
 $coordinatesRaw = $_POST['coordinates'] ?? '[]';
+$maxColors = $_POST['maxColors'] ?? 10;
 
 $selectedColors = $selectedColorsRaw !== '' ? explode(',', $selectedColorsRaw) : [];
 $hexValues = $hexValuesRaw !== '' ? explode(',', $hexValuesRaw) : [];
@@ -12,7 +13,7 @@ $coordinates = json_decode($coordinatesRaw, true) ?? [];
 $postError = false;
 
 if($size < 1 || $size > 26) $postError = true;
-if($numColors < 1 || $numColors > 10) $postError = true;
+if($numColors < 1 || $numColors > $maxColors) $postError = true;
 if(count($selectedColors) !== (int)$numColors) $postError = true;
 ?>
 <!DOCTYPE html>
@@ -25,6 +26,11 @@ if(count($selectedColors) !== (int)$numColors) $postError = true;
     <link rel="stylesheet" href="print.css">
 </head>
 <body>
+    <form method="POST" action="color.php" id="returnForm">
+        <input type="hidden" name="rows" value="<?php echo $size; ?>">
+        <input type="hidden" name="numColors" value="<?php echo $numColors; ?>">
+        <button type="submit">Back to Color Coordinator</button>
+    </form>
     <header>
         <div class="logo-area">
             <img src="images/teamlogo.png" alt="404 Logo" class="header-logo" width="200">
