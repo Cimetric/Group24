@@ -1,24 +1,22 @@
 <?php
-// Set the content type so the browser treats this as CSS, not HTML
 header("Content-type: text/css");
+require 'db.php';
 
-require 'db.php'; // Access your database connection
+// Fetch colors using MySQLi syntax
+$sql = "SELECT name, hex_value FROM colors";
+$result = $conn->query($sql);
 
-try {
-    // Fetch all color names and hex values
-    $stmt = $conn->query("SELECT name, hex_value FROM colors");
-    $colors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if ($result) {
+    // Use the MySQLi-specific fetch method
+    $colors = $result->fetch_all(MYSQLI_ASSOC);
 
     foreach ($colors as $color) {
-        // Sanitize the name to ensure it's a valid CSS class (e.g., remove spaces)
+        // Sanitize name for CSS class
         $className = str_replace(' ', '-', strtolower($color['name']));
         $hex = $color['hex_value'];
 
-        // Output the CSS rule
         echo ".color-{$className} { background-color: {$hex}; }\n";
         echo ".text-{$className} { color: {$hex}; }\n";
     }
-} catch (PDOException $e) {
-    // Silently fail or log error so it doesn't break the CSS file
 }
 ?>
