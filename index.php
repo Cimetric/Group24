@@ -6,6 +6,7 @@
     <meta name="author" content="Group 24">
     <title>Home | 404: Team Not Found</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="colors_dynamic.php">
 </head>
 <body>
 

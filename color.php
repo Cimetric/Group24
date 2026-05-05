@@ -38,6 +38,7 @@ $selectedColors = [];
     <meta charset="UTF-8">
     <title>Color | 404: Team Not Found</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="colors_dynamic.php">
 </head>
 <body>
     <header>
